@@ -6,7 +6,9 @@ def cat(note):
 	no=list()
 	ma=0
 	for i in note:
-		i=i.split('/')
+		time=i[1]
+		stat=i[2]
+		i=i[0].split('/')
 		for j in range(len(i)):
 			t=True
 			for l in range(len(name)):
@@ -17,32 +19,31 @@ def cat(note):
 				name.append(i[j])
 				nom.append(j)
 				i[j]=len(nom)-1
-		no.append(i)
+		no.append([i,time,stat])
 		if len(i)>ma:
 			ma=len(i)
 	cate=dict()
+	cat=dict()
 	for k in range(ma):
-		for i in no:
+		for j in no:
+			i=j[0]
 			if k<len(i):
 				if i[k] not in cate.keys():
 					cate[i[k]]=[]
+			if k==len(i)-1:
+				cat[i[k]]=[j[1],j[2]]
 			if 0<k<len(i):
 				if i[k] not in cate[i[k-1]]:
 					cate[i[k-1]].append(i[k])
 		k+=1
-	cat=dict()
-	for i in cate:
-		cat[name[i]]=[]
-		for j in cate[i]:
-			cat[name[i]].append(name[j])
-	return cat
+	return cate,cat
 
-def write(note,index,nom):
+def write(note, index, nom):
 	if note[index]:
 		t=True
 		for i in note[index]:
-			print(' - '*nom+str(i),end='')
-			write(note,i,nom+1)
+			print('	'*nom+str(i), end='')
+			write(note, i, nom+1)
 			if t:
 				t=False
 				nom+=1
@@ -70,8 +71,8 @@ while True:
 		with open('db.csv', 'r') as file:
 			for i in csv.reader(file, delimiter='|', quotechar=' '):
 				if i[2]:
-					unit.append(i[2]+'/'+i[0])
-		note=cat(unit)
+					unit.append([i[2]+'/'+i[0],i[1],i[3]])
+		note,data=cat(unit)
 		on=list()
 		for i in note:
 			t=True
@@ -81,6 +82,12 @@ while True:
 			if t:
 				on.append(i)
 		print('--------------------')
+		for i in data:
+			print(i,end=' ')
+			for j in data[i]:
+				print(j,end=' ')
+			print()
+		print('-----')
 		for i in on:
-			print(i,end=' - ')
-			write(note,i,0)
+			print(i, end='	')
+			write(note, i, 0)
