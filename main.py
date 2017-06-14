@@ -1,10 +1,10 @@
 import csv
-#from json import *
 
 def cat(note):
 	name=list()
 	nom=list()
 	no=list()
+	ma=0
 	for i in note:
 		i=i.split('/')
 		for j in range(len(i)):
@@ -18,50 +18,19 @@ def cat(note):
 				nom.append(j)
 				i[j]=len(nom)-1
 		no.append(i)
+		if len(i)>ma:
+			ma=len(i)
 	cate=dict()
-	k=0
-	for i in no:
-		if k<len(i)-1:
-			if i[k] not in cate.keys():
-				cate[i[k]]=[]
-		if 0<k<len(i):
-			cate[i[k-1]].append(i[k])
-	return no
-	'''
-
-		for j in range(len(i)-1):
-			if i[j] not in cate.keys():
-
-			t=True
-			for l in cate.keys():
-				if i[j] in l:
-					t=False
-			if t:
-	'''
-	'''
-	cate=dict()
-	no=list()
-	for i in note:
-		no.append(i.split('/'))
-	for i in no:
-		if i[0]
-	return no
-	'''
-	'''
-	for i in note:
-		max=i.count('/')+1
-	for i in note:
-		no=i.split('/')
-		if len(no)==max:
-			no[max-1]
-	'''
-	'''
-	for i in note:
-		no=i.split('/')
-		while len(no)>0:
-			if no[0] in cate:
-				cate.append()
-	'''
+	for k in range(ma):
+		for i in no:
+			if k<len(i):
+				if i[k] not in cate.keys():
+					cate[i[k]]=[]
+			if 0<k<len(i):
+				if i[k] not in cate[i[k-1]]:
+					cate[i[k-1]].append(i[k])
+			k+=1
+	return cate
 
 while True:
 	print('--------------------','1 - На сегодня','2 - Ветки','3 - Добавить','4 - ','0 - Выход',sep='\n')
@@ -78,10 +47,6 @@ while True:
 			time=input('Когда выполнить: ') if typ!=3 else 0
 			with open('db.csv', 'a') as file:
 				csv.writer(file, delimiter='|', quotechar=' ', quoting=csv.QUOTE_MINIMAL).writerow([name,time,unit,1])
-			'''
-			with open('db.txt', 'a') as file:
-				print(dumps({'note':name,'unit':unit,'time':time}), file=file, end='')
-			'''
 
 	if inp==2:
 		unit=list()
@@ -89,11 +54,15 @@ while True:
 			for i in csv.reader(file, delimiter='|', quotechar=' '):
 				if i[2]:
 					unit.append(i[2]+'/'+i[0])
-		for i in cat(unit):
-			for j in i:
-				print(j,end='	')
-			print()
-		'''
-		with open('db.txt', 'r') as file:
-			print(loads(file.read()))
-		'''
+		note=cat(unit)
+		on=list()
+		for i in note:
+			t=True
+			for j in note[i]:
+				if i==j:
+					t=False
+			if t:
+				on.append(i)
+		for i in on:
+			print(i)
+			print(j for j in note[i])
