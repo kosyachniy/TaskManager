@@ -33,9 +33,16 @@ def cat(note):
 	return cate
 
 def write(note,index,nom):
-	for i in note[index]:
-		print('	'*nom+str(i))
-		write(note,i,nom+1)
+	if note[index]:
+		t=True
+		for i in note[index]:
+			print('	'*nom+str(i),end='')
+			write(note,i,nom+1)
+			if t:
+				t=False
+				nom+=1
+	else:
+		print()
 
 while True:
 	print('--------------------','1 - На сегодня','2 - Ветки','3 - Добавить','4 - ','0 - Выход',sep='\n')
@@ -69,5 +76,5 @@ while True:
 			if t:
 				on.append(i)
 		for i in on:
-			print(i,end='')
-			write(note,i,1)
+			print(i,end='	')
+			write(note,i,0)
