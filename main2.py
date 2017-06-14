@@ -2,7 +2,6 @@ import csv
 
 def cat(note):
 	name=list()
-	nom=list()
 	no=list()
 	ma=0
 	for i in note:
