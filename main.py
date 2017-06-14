@@ -29,8 +29,13 @@ def cat(note):
 			if 0<k<len(i):
 				if i[k] not in cate[i[k-1]]:
 					cate[i[k-1]].append(i[k])
-			k+=1
+		k+=1
 	return cate
+
+def write(note,index,nom):
+	for i in note[index]:
+		print('	'*nom+str(i))
+		write(note,i,nom+1)
 
 while True:
 	print('--------------------','1 - На сегодня','2 - Ветки','3 - Добавить','4 - ','0 - Выход',sep='\n')
@@ -58,11 +63,11 @@ while True:
 		on=list()
 		for i in note:
 			t=True
-			for j in note[i]:
-				if i==j:
+			for j in note:
+				if i in note[j]:
 					t=False
 			if t:
 				on.append(i)
 		for i in on:
-			print(i)
-			print(j for j in note[i])
+			print(i,end='')
+			write(note,i,1)
